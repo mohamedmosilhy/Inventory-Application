@@ -37,4 +37,23 @@ async function selectCategoryAndInstruments(id) {
   return { category: category.rows[0], instruments: instruments.rows };
 }
 
-module.exports = { selectAllCategories, selectCategoryAndInstruments };
+async function addNewCategoryToDb(name, description) {
+  await db.query("INSERT INTO categories (name, description) VALUES ($1,$2)", [
+    name,
+    description,
+  ]);
+}
+
+async function addNewInstrumentToDb(name, category, price, brand, quantity) {
+  await db.query(
+    "INSERT INTO instruments (name, category_id, price, brand, quantity) VALUES ($1,$2,$3,$4,$5)",
+    [name, category, price, brand, quantity]
+  );
+}
+
+module.exports = {
+  selectAllCategories,
+  selectCategoryAndInstruments,
+  addNewCategoryToDb,
+  addNewInstrumentToDb,
+};
