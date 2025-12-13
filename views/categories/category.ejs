@@ -11,18 +11,19 @@
     </head>
 
     <body>
-        <h1>Instrument Categories</h1>
+        <h1>
+            <%= category.name %> Instruments
+        </h1>
+
         <ul>
-            <% categories.forEach(category=> { %>
+            <% instruments.forEach(instrument=> { %>
                 <li>
-                    <a href="/categories/<%= category.id %>">
-                        <%= category.name %>
-                    </a>
+                    <%= instrument.name %> - <%= instrument.brand %> (Quantity: <%= instrument.quantity %>) - $<%=
+                                    instrument.price %>
                 </li>
                 <% }) %>
         </ul>
-        <a href="/categories/new">Add Category</a>
-        <a href="/">Home</a>
+        <a href="/instrument/new">Add Instrument</a>
     </body>
 
 </html>
