@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-const db = require("./db/pool");
 const categoriesRouter = require("./routes/categories");
 const instrumentsRouter = require("./routes/instruments");
 

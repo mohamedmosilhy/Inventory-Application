@@ -17,7 +17,12 @@ module.exports = {
         categories: categories,
       });
     } catch (error) {
-      res.status(500).send("Error fetching categories ");
+      console.error("Error fetching categories:", error);
+      res.status(500).render("error.ejs", {
+        title: "Error Fetching Categories",
+        message: "We couldn't load the categories. Please try again later.",
+        details: error.message,
+      });
     }
   },
   getSpecificCategory: async (req, res) => {
@@ -29,14 +34,25 @@ module.exports = {
         instruments: obj.instruments,
       });
     } catch (error) {
-      res.status(500).send("Error fetching category ");
+      console.error("Error fetching category:", error);
+      res.status(500).render("error.ejs", {
+        title: "Error Fetching Category",
+        message:
+          "We couldn't load this category. It may not exist or there was a server error.",
+        details: error.message,
+      });
     }
   },
   showAddCategoryForm: async (req, res) => {
     try {
       res.render("categories/newCategory.ejs", { title: "New Category" });
     } catch (error) {
-      res.status(500).send("Error in renderning the add category form");
+      console.error("Error showing add category form:", error);
+      res.status(500).render("error.ejs", {
+        title: "Error Loading Form",
+        message: "We couldn't load the add category form. Please try again.",
+        details: error.message,
+      });
     }
   },
   addCategory: async (req, res) => {
@@ -53,7 +69,13 @@ module.exports = {
       await addNewCategoryToDb(name, description);
       res.redirect("/categories");
     } catch (error) {
-      res.status(500).send("Error in renderning the add category form");
+      console.error("Error adding category:", error);
+      res.status(500).render("error.ejs", {
+        title: "Error Adding Category",
+        message:
+          "We couldn't add the category. Please check your input and try again.",
+        details: error.message,
+      });
     }
   },
   showEditCategoryForm: async (req, res) => {
@@ -61,14 +83,22 @@ module.exports = {
       const categoryId = req.params.id;
       const categoryData = await selectCategoryAndInstruments(categoryId);
       if (!categoryData.category) {
-        return res.status(404).send("Category not found");
+        return res.status(404).render("error.ejs", {
+          title: "Category Not Found",
+          message: "The category you're looking for doesn't exist.",
+        });
       }
       res.render("categories/editCategory.ejs", {
         title: "Edit Category",
         category: categoryData.category,
       });
     } catch (error) {
-      res.status(500).send("Error in renderning the edit category form");
+      console.error("Error showing edit category form:", error);
+      res.status(500).render("error.ejs", {
+        title: "Error Loading Form",
+        message: "We couldn't load the edit category form. Please try again.",
+        details: error.message,
+      });
     }
   },
   editCategoryForm: async (req, res) => {
@@ -85,7 +115,12 @@ module.exports = {
       await editCategoryInDb(req.params.id, name, description);
       res.redirect("/categories");
     } catch (error) {
-      res.status(500).send("Error in renderning the edit category form");
+      console.error("Error editing category:", error);
+      res.status(500).render("error.ejs", {
+        title: "Error Updating Category",
+        message: "We couldn't update the category. Please try again.",
+        details: error.message,
+      });
     }
   },
   deleteCategory: async (req, res) => {
@@ -94,7 +129,13 @@ module.exports = {
       await deleteCategoryFromDb(categoryId);
       res.redirect("/categories");
     } catch (error) {
-      res.status(500).send("Error deleting category");
+      console.error("Error deleting category:", error);
+      res.status(500).render("error.ejs", {
+        title: "Error Deleting Category",
+        message:
+          "We couldn't delete the category. It may contain instruments that need to be removed first.",
+        details: error.message,
+      });
     }
   },
 };

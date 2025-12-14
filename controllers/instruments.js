@@ -19,7 +19,12 @@ module.exports = {
         data: {},
       });
     } catch (error) {
-      res.status(500).send("Error in renderning the add instrument form");
+      console.error("Error showing add instrument form:", error);
+      res.status(500).render("error.ejs", {
+        title: "Error Loading Form",
+        message: "We couldn't load the add instrument form. Please try again.",
+        details: error.message,
+      });
     }
   },
   addInstrument: async (req, res) => {
@@ -39,7 +44,12 @@ module.exports = {
       res.redirect(`/categories/${categoryId}`);
     } catch (error) {
       console.error("Error adding instrument:", error);
-      res.status(500).send(`Error adding instrument: ${error.message}`);
+      res.status(500).render("error.ejs", {
+        title: "Error Adding Instrument",
+        message:
+          "We couldn't add the instrument. Please check your input and try again.",
+        details: error.message,
+      });
     }
   },
   showEditInstrumentForm: async (req, res) => {
@@ -47,7 +57,10 @@ module.exports = {
       const instrumentId = req.params.id;
       const instrument = await selectInstrument(instrumentId);
       if (!instrument) {
-        return res.status(404).send("Instrument not found");
+        return res.status(404).render("error.ejs", {
+          title: "Instrument Not Found",
+          message: "The instrument you're looking for doesn't exist.",
+        });
       }
       const categories = await selectAllCategories();
       res.render("instruments/editInstrument.ejs", {
@@ -58,7 +71,11 @@ module.exports = {
       });
     } catch (error) {
       console.error("Error showing edit form:", error);
-      res.status(500).send("Error loading edit form");
+      res.status(500).render("error.ejs", {
+        title: "Error Loading Form",
+        message: "We couldn't load the edit instrument form. Please try again.",
+        details: error.message,
+      });
     }
   },
   editInstrument: async (req, res) => {
@@ -86,7 +103,12 @@ module.exports = {
       res.redirect(`/categories/${category_id}`);
     } catch (error) {
       console.error("Error editing instrument:", error);
-      res.status(500).send(`Error editing instrument: ${error.message}`);
+      res.status(500).render("error.ejs", {
+        title: "Error Updating Instrument",
+        message:
+          "We couldn't update the instrument. Please check your input and try again.",
+        details: error.message,
+      });
     }
   },
   deleteInstrument: async (req, res) => {
@@ -94,14 +116,21 @@ module.exports = {
       const instrumentId = req.params.id;
       const instrument = await selectInstrument(instrumentId);
       if (!instrument) {
-        return res.status(404).send("Instrument not found");
+        return res.status(404).render("error.ejs", {
+          title: "Instrument Not Found",
+          message: "The instrument you're trying to delete doesn't exist.",
+        });
       }
       const categoryId = instrument.category_id;
       await deleteInstrumentFromDb(instrumentId);
       res.redirect(`/categories/${categoryId}`);
     } catch (error) {
       console.error("Error deleting instrument:", error);
-      res.status(500).send("Error deleting instrument");
+      res.status(500).render("error.ejs", {
+        title: "Error Deleting Instrument",
+        message: "We couldn't delete the instrument. Please try again.",
+        details: error.message,
+      });
     }
   },
 };
