@@ -8,54 +8,56 @@
             <%= title %>
         </title>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+        <link rel="stylesheet" href="/styles.css">
     </head>
 
     <body>
-        <h1>Edit Instrument</h1>
+        <div class="container">
+            <h1>Edit Instrument</h1>
 
-        <% if (errors && errors.length> 0) { %>
-            <div style="color: red;">
-                <ul>
-                    <% errors.forEach(error=> { %>
-                        <li>
-                            <%= error.msg %>
-                        </li>
-                        <% }); %>
-                </ul>
-            </div>
-            <% } %>
-
-                <form action="/instruments/edit/<%= instrument.id %>" method="post">
-                    <label for="name">Instrument Name:</label>
-                    <input type="text" id="name" name="name" value="<%= instrument.name %>" required>
-                    <br>
-
-                    <label for="category_id">Category:</label>
-                    <select id="category_id" name="category_id" required>
-                        <% categories.forEach(category=> { %>
-                            <option value="<%= category.id %>" <%=instrument.category_id==category.id ? 'selected' : ''
-                                %>>
-                                <%= category.name %>
-                            </option>
+            <% if (errors && errors.length> 0) { %>
+                <div class="error">
+                    <strong>Please fix the following errors:</strong>
+                    <ul>
+                        <% errors.forEach(error=> { %>
+                            <li>
+                                <%= error.msg %>
+                            </li>
                             <% }); %>
-                    </select>
-                    <br>
+                    </ul>
+                </div>
+                <% } %>
 
-                    <label for="price">Price:</label>
-                    <input type="number" step="0.01" id="price" name="price" value="<%= instrument.price %>" required>
-                    <br>
+                    <form action="/instruments/edit/<%= instrument.id %>" method="post">
+                        <label for="name">Instrument Name:</label>
+                        <input type="text" id="name" name="name" value="<%= instrument.name %>" required>
 
-                    <label for="brand">Brand:</label>
-                    <input type="text" id="brand" name="brand" value="<%= instrument.brand %>" required>
-                    <br>
+                        <label for="category_id">Category:</label>
+                        <select id="category_id" name="category_id" required>
+                            <% categories.forEach(category=> { %>
+                                <option value="<%= category.id %>" <%=instrument.category_id==category.id ? 'selected'
+                                    : '' %>>
+                                    <%= category.name %>
+                                </option>
+                                <% }); %>
+                        </select>
 
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" id="quantity" name="quantity" value="<%= instrument.quantity %>" required>
-                    <br>
+                        <label for="brand">Brand:</label>
+                        <input type="text" id="brand" name="brand" value="<%= instrument.brand %>" required>
 
-                    <button type="submit">Update Instrument</button>
-                    <a href="/categories/<%= instrument.category_id %>">Cancel</a>
-                </form>
+                        <label for="price">Price ($):</label>
+                        <input type="number" step="0.01" id="price" name="price" value="<%= instrument.price %>"
+                            required>
+
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" value="<%= instrument.quantity %>" required>
+
+                        <div class="form-buttons">
+                            <button type="submit">Update Instrument</button>
+                            <a href="/categories/<%= instrument.category_id %>">Cancel</a>
+                        </div>
+                    </form>
+        </div>
     </body>
 
 </html>

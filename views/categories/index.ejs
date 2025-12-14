@@ -8,21 +8,41 @@
             <%= title %>
         </title>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+        <link rel="stylesheet" href="/styles.css">
     </head>
 
     <body>
-        <h1>Instrument Categories</h1>
-        <ul>
-            <% categories.forEach(category=> { %>
-                <li>
-                    <a href="/categories/<%= category.id %>">
-                        <%= category.name %>
-                    </a>
-                </li>
-                <% }) %>
-        </ul>
-        <a href="/categories/new">Add Category</a>
-        <a href="/">Home</a>
+        <div class="container">
+            <div class="action-bar">
+                <h1>Instrument Categories</h1>
+                <div class="action-buttons">
+                    <a href="/categories/new">➕ Add New Category</a>
+                    <a href="/">🏠 Home</a>
+                </div>
+            </div>
+
+            <div class="category-grid">
+                <% categories.forEach(category=> { %>
+                    <div class="category-card" onclick="window.location.href='/categories/<%= category.id %>'">
+                        <h3>
+                            <%= category.name %>
+                        </h3>
+                        <p style="color: var(--gold-dark); margin: 10px 0;">
+                            <%= category.description || 'No description' %>
+                        </p>
+                        <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
+                            <a href="/categories/edit/<%= category.id %>" onclick="event.stopPropagation()"
+                                style="padding: 8px 16px; background: var(--black-light); border: 1px solid var(--gold); border-radius: 6px;">✏️
+                                Edit</a>
+                            <a href="/categories/delete/<%= category.id %>"
+                                onclick="event.stopPropagation(); return confirm('Delete this category?')"
+                                style="padding: 8px 16px; background: var(--black-light); border: 1px solid #ff4444; border-radius: 6px; color: #ff6666;">🗑️
+                                Delete</a>
+                        </div>
+                    </div>
+                    <% }); %>
+            </div>
+        </div>
     </body>
 
 </html>

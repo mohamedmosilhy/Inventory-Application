@@ -8,12 +8,19 @@
             <%= title %>
         </title>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+        <link rel="stylesheet" href="/styles.css">
     </head>
 
     <body>
-        <h1>Musical Instruments Inventory</h1>
-        <p>Welcome 🎸🎹🥁</p>
-        <a href="/categories">View Instrument Categories</a>
+        <div class="container">
+            <div class="header">
+                <h1>Musical Instruments Inventory</h1>
+                <p class="welcome">Welcome 🎸🎹🥁</p>
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="/categories" class="btn">View All Categories</a>
+            </div>
+        </div>
     </body>
 
 </html>

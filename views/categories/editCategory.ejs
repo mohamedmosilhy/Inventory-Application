@@ -7,19 +7,40 @@
         <title>
             <%= title %>
         </title>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+        <link rel="stylesheet" href="/styles.css">
     </head>
 
     <body>
+        <div class="container">
+            <h1>Edit Category</h1>
 
-        <h1>Edit Category</h1>
-        <form action="/categories/edit/<%= category.id %>" method="POST">
-            <label for="name">Category Name:</label>
-            <input type="text" id="name" name="name" value="<%= category.name %>" required>
-            <label for="description">Description:</label>
-            <input type="text" id="description" name="description" value="<%= category.description %>">
-            <button type="submit">Update Category</button>
-        </form>
+            <% if (typeof errors !=='undefined' && errors.length> 0) { %>
+                <div class="error">
+                    <strong>Please fix the following errors:</strong>
+                    <ul>
+                        <% errors.forEach(error=> { %>
+                            <li>
+                                <%= error.msg %>
+                            </li>
+                            <% }); %>
+                    </ul>
+                </div>
+                <% } %>
 
+                    <form action="/categories/edit/<%= category.id %>" method="POST">
+                        <label for="name">Category Name:</label>
+                        <input type="text" id="name" name="name" value="<%= category.name %>" required>
+
+                        <label for="description">Description:</label>
+                        <textarea id="description" name="description"><%= category.description %></textarea>
+
+                        <div class="form-buttons">
+                            <button type="submit">Update Category</button>
+                            <a href="/categories">Cancel</a>
+                        </div>
+                    </form>
+        </div>
     </body>
 
 </html>
