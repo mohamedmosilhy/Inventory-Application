@@ -51,9 +51,49 @@ async function addNewInstrumentToDb(name, category, price, brand, quantity) {
   );
 }
 
+async function editCategoryInDb(id, name, description) {
+  await db.query("UPDATE categories SET name=$1, description=$2 WHERE id=$3", [
+    name,
+    description,
+    id,
+  ]);
+}
+
+async function deleteCategoryFromDb(id) {
+  await db.query("DELETE FROM categories WHERE id=$1", [id]);
+}
+
+async function selectInstrument(id) {
+  const result = await db.query("SELECT * FROM instruments WHERE id=$1", [id]);
+  return result.rows[0];
+}
+
+async function editInstrumentInDb(
+  id,
+  name,
+  category_id,
+  price,
+  brand,
+  quantity
+) {
+  await db.query(
+    "UPDATE instruments SET name=$1, category_id=$2, price=$3, brand=$4, quantity=$5 WHERE id=$6",
+    [name, category_id, price, brand, quantity, id]
+  );
+}
+
+async function deleteInstrumentFromDb(id) {
+  await db.query("DELETE FROM instruments WHERE id=$1", [id]);
+}
+
 module.exports = {
   selectAllCategories,
   selectCategoryAndInstruments,
   addNewCategoryToDb,
   addNewInstrumentToDb,
+  editCategoryInDb,
+  deleteCategoryFromDb,
+  selectInstrument,
+  editInstrumentInDb,
+  deleteInstrumentFromDb,
 };

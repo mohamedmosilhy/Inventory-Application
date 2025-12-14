@@ -7,6 +7,9 @@ const {
   getSpecificCategory,
   showAddCategoryForm,
   addCategory,
+  showEditCategoryForm,
+  editCategoryForm,
+  deleteCategory,
 } = require("../controllers/categories");
 
 router.get("/", getAllCategories);
@@ -16,6 +19,14 @@ router.post(
   [body("name").trim().notEmpty().withMessage("Name should not be empty")],
   addCategory
 );
+router.get("/edit/:id", showEditCategoryForm);
+router.post(
+  "/edit/:id",
+  [body("name").trim().notEmpty().withMessage("Name should not be empty")],
+  editCategoryForm
+);
+router.get("/delete/:id", deleteCategory);
+router.post("/delete/:id", deleteCategory);
 router.get("/:id", getSpecificCategory);
 
 module.exports = router;
